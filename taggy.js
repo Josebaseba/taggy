@@ -73,8 +73,6 @@
   };
 
   var __getCoords = function(event){
-    console.log(this, event);
-    console.log(this.naturalWidth, this.naturalHeight);
     var absoluteX = event.offsetX - this.offsetLeft;
     var absoluteY = event.offsetY - this.offsetTop;
     var relativeX = (absoluteX * 100) / this.offsetWidth;
