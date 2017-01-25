@@ -1,5 +1,4 @@
 # taggy
-Tag images
 
 ```javascript
 
