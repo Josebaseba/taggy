@@ -1,0 +1,10 @@
+span.taggy-coord {
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  margin-left: -7px;
+  margin-top: -7px;
+  background-color: red;
+  border-radius: 50%;
+  cursor: pointer;
+}
