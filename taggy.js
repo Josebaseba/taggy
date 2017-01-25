@@ -1,4 +1,4 @@
-// Taggy 0.0.1
+// Taggy 0.0.2
 
 (function() {
 
@@ -7,7 +7,7 @@
       var selector = document.querySelectorAll(params);
 
       this.length = selector.length;
-      this.version = '0.0.1';
+      this.version = '0.0.2';
 
       for(var i = 0; i < this.length; i++) {
         this[i] = selector[i];
@@ -20,6 +20,7 @@
         styles += ';max-height:' + this[i].naturalHeight + 'px;';
         div.setAttribute('style', styles);
         this[i].parentNode.insertBefore(div, this[i].nextSibling);
+        this[i].setAttribute('style', 'max-width: 100%');
         div.appendChild(this[i]);
       }
 
