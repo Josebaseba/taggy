@@ -86,7 +86,7 @@
     if(options.id) span.setAttribute('id', options.id);
     if(options.class) span.className += ' ' + options.class;
     if(typeof options.text === 'string'){
-      var type = options.type === 'get' ? 'get' : 'set';
+      var type = options.type === 'set' ? 'set' : 'get';
       span.dataset.id = _taggy.generateId('tag');
       if(type === 'set'){
         // TODO: Return an input and check if the val is correct
@@ -106,3 +106,4 @@
   if(!window.Taggy) window.Taggy = _taggy;
 
 })();
+
