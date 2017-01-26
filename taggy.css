@@ -1,3 +1,13 @@
+/* Taggy v0.0.4 */
+
+div.taggy-container {
+  position: relative;
+}
+
+img.taggy-img {
+  max-width: 100%;
+}
+
 span.taggy-coord {
   position: absolute;
   height: 14px;
@@ -7,4 +17,10 @@ span.taggy-coord {
   background-color: red;
   border-radius: 50%;
   cursor: pointer;
+}
+
+span.taggy-coord.text {
+  margin-top: -30px;
+  margin-left: -20px;
+  background: none;
 }
