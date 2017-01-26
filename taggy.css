@@ -1,4 +1,4 @@
-/* Taggy v0.0.4 */
+/* Taggy v0.0.5 */
 
 div.taggy-container {
   position: relative;
@@ -24,3 +24,90 @@ span.taggy-coord.text {
   margin-left: -20px;
   background: none;
 }
+
+
+
+.confirmModal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+  opacity: .5;
+}
+
+.confirmBox {
+  cursor: default;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.confirmBox a {
+  text-decoration: none;
+}
+
+.confirmBox .confirmDialog {
+  transform: translate(0, 0);
+  width: 400px;
+  margin: 10% auto;
+  position: relative;
+}
+
+.confirmBox .confirmContent {
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  outline: 0;
+  font-size: 24px;
+  border-radius: .20em;
+  font-family: sans-serif;
+}
+
+.confirmBox .confirmTitle {
+  padding: 35px 30px;
+  color: #000;
+  margin: 0;
+}
+
+.confirmBox .confirmButtons { }
+
+.confirmBox .button {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  color: #fff;
+  width: 50%;
+  position: relative;
+  padding: 25px;
+  text-align: center;
+}
+
+.confirmBox .accept {
+  background-color: #34BC9D;
+  border-radius: 0 0 0 .20em;
+}
+
+.confirmBox .accept:hover { background-color: #46CFB0; }
+
+.confirmBox .cancel {
+  background-color: #fc7169;
+  border-radius: 0 0 .20em 0;
+}
+
+.confirmBox .cancel:hover { background-color: #fc8982; }
