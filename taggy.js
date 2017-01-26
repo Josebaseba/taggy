@@ -1,33 +1,33 @@
-// Taggy 0.0.3
+// Taggy 0.0.4
 
 (function() {
 
-  var Taggy = function(params) {
+  var Taggy = function(params){
 
       var selector = document.querySelectorAll(params);
 
       this.length = selector.length;
-      this.version = '0.0.3';
+      this.version = '0.0.4';
 
-      for(var i = 0; i < this.length; i++) {
+      for(var i = 0; i < this.length; i++){
         this[i] = selector[i];
         var divId = _taggy.generateId('taggy-container');
-        div = document.createElement('div');
+        var div = document.createElement('div');
         this[i].divId = divId;
         div.setAttribute('id', divId);
-        var styles = 'position: relative;';
-        styles += 'max-width: ' + this[i].naturalWidth + 'px';
+        div.setAttribute('class', 'taggy-container');
+        var styles = 'max-width: ' + this[i].naturalWidth + 'px';
         styles += ';max-height:' + this[i].naturalHeight + 'px;';
         div.setAttribute('style', styles);
         this[i].parentNode.insertBefore(div, this[i].nextSibling);
-        this[i].setAttribute('style', 'max-width: 100%');
+        this[i].setAttribute('class', 'taggy-img');
         div.appendChild(this[i]);
       }
 
       return this;
   };
 
-  var _taggy = function (params) {
+  var _taggy = function(params){
     return new Taggy(params);
   };
 
@@ -93,17 +93,23 @@
       }else{
         // TODO: Show an audio or a image? Maybe this should be a plugin (.fn)
         span.addEventListener('click', function(event){
+          __resetCoordsTexts(div);
           span.innerHTML = options.text;
-          span.style['margin-top'] = '-30px';
-          span.style['margin-left'] = '-20px';
-          span.style.background = 'none';
+          span.className += ' text';
         });
       }
     }
     return span;
   };
 
+  var __resetCoordsTexts = function(div){
+    var coordsSpans = div.querySelectorAll('span.taggy-coord');
+    for(var i = 0; i < coordsSpans.length; i++){
+      coordsSpans[i].innerHTML = '';
+      coordsSpans[i].className = coordsSpans[i].className.replace(/\btext\b/, '');
+    }
+  };
+
   if(!window.Taggy) window.Taggy = _taggy;
 
 })();
-
