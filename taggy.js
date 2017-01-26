@@ -1,4 +1,4 @@
-// Taggy 0.0.4
+// Taggy 0.0.5
 
 (function() {
 
@@ -7,7 +7,7 @@
       var selector = document.querySelectorAll(params);
 
       this.length = selector.length;
-      this.version = '0.0.4';
+      this.version = '0.0.5';
 
       for(var i = 0; i < this.length; i++){
         this[i] = selector[i];
@@ -96,17 +96,48 @@
           __resetCoordsTexts(div);
           span.innerHTML = options.text;
           span.className += ' text';
+          if(typeof options.modal === 'object' || options.modal === true){
+            span.className += ' modal';
+            var acceptBtn, cancelBtn; // hideCancelBtn;
+            if(typeof options.modal === 'object'){
+              acceptBtn = options.modal.acceptBtn;
+              // hideCancelBtn = options.modal.hideCancelBtn;
+              cancelBtn = options.modal.cancelBtn;
+            }
+            var modal = [
+                '<div class="confirmBox"><div class="confirmDialog"><div class="confirmContent">',
+                '<div class="confirmTitle">', options.text || '', '</div>',
+                '<div class="confirmButtons">',
+                '<a class="button accept" style="width: 100%;">', acceptBtn || 'Accept', '</a>',
+                // hideCancelBtn ? '' : '<a class="button cancel">', cancelBtn || 'Cancel', '</a>',
+                '</div>',
+                '</div></div></div>',
+                '<div class="confirmModal"></div>'
+            ].join('');
+            span.innerHTML = modal;
+            var acceptBtn = span.querySelectorAll('a.button.accept')[0];
+            acceptBtn.addEventListener('click', function(event){
+              event.stopPropagation();
+              __resetCoordsTexts(div);
+            });
+            // if(hideCancelBtn) return;
+            // var cancelBtn = span.querySelectorAll('a.button.accept')[0];
+            // cancelBtn.addEventListener('click', function(event){
+            //   __resetCoordsTexts(div);
+            // });
+          }
         });
       }
     }
     return span;
   };
 
-  var __resetCoordsTexts = function(div){
+  var __resetCoordsTexts = function(div, removeModal){
     var coordsSpans = div.querySelectorAll('span.taggy-coord');
     for(var i = 0; i < coordsSpans.length; i++){
       coordsSpans[i].innerHTML = '';
       coordsSpans[i].className = coordsSpans[i].className.replace(/\btext\b/, '');
+      coordsSpans[i].className = coordsSpans[i].className.replace(/\bmodal\b/, '');
     }
   };
 
