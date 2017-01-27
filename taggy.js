@@ -1,4 +1,4 @@
-// Taggy 0.0.5
+// Taggy 0.1.0
 
 (function() {
 
@@ -51,7 +51,7 @@
       return this;
     },
 
-    setCoords: function(data){
+    setCoords: function(data, cb){
       if(!data) return;
       var isArray = Object.prototype.toString.call(data) === '[object Array]';
       if(!isArray && typeof data !== 'object') return;
@@ -64,7 +64,9 @@
           span.setAttribute('class', 'taggy-coord');
           var styles = 'left: ' + coords.x + '%;top: ' + coords.y + '%;';
           span.setAttribute('style', styles);
-          if(typeof coords.options === 'object') span = __parseOptions(span, coords, div);
+          if(typeof coords.options === 'object'){
+            span = __parseOptions(span, coords, div, cb);
+          }
           div.appendChild(span);
         });
       }
@@ -81,7 +83,7 @@
     return {x: relativeX, y: relativeY};
   };
 
-  var __parseOptions = function(span, coords, div){
+  var __parseOptions = function(span, coords, div, cb){
     var options = coords.options;
     if(options.id) span.setAttribute('id', options.id);
     if(options.class) span.className += ' ' + options.class;
@@ -89,30 +91,67 @@
       var type = options.type === 'set' ? 'set' : 'get';
       span.dataset.id = _taggy.generateId('tag');
       if(type === 'set'){
+        if(typeof cb !== 'function') cb = function(){};
         // TODO: Return an input and check if the val is correct
+        span.addEventListener('click', function(event){
+          __resetCoordsTexts(div);
+          span.className += ' taggy-input';
+          if(typeof options.modal === 'object' || options.modal === true){
+            span.className += ' modal';
+            var acceptBtn, cancelBtn, hideCancelBtn;
+            if(typeof options.modal === 'object'){
+              acceptBtn = options.modal.acceptBtn;
+              hideCancelBtn = options.modal.hideCancelBtn;
+              cancelBtn = options.modal.cancelBtn;
+            }
+            var acceptBtnHtml = '<a class="button accept"' + (hideCancelBtn ? 'style="width: 100%;"' : '') + '>';
+            var modal = [
+                '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
+                '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
+                '<input type="text" class="taggy-input">',
+                '<div class="confirm-buttons">',
+                acceptBtnHtml, acceptBtn || 'Accept', '</a>',
+                hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
+                '</div>',
+                '</div></div></div>',
+                '<div class="confirm-modal"></div>'
+            ].join('');
+            span.innerHTML = modal;
+            var input = span.querySelectorAll('input.taggy-input')[0];
+            input.addEventListener('click', function(event){
+              event.stopPropagation();
+            });
+            var acceptBtn = span.querySelectorAll('a.button.accept')[0];
+            acceptBtn.addEventListener('click', function(event){
+              event.stopPropagation();
+              cb(input.value || null, coords);
+              __resetCoordsTexts(div);
+            });
+            if(hideCancelBtn) return;
+            var cancelBtn = span.querySelectorAll('a.button.cancel')[0];
+            cancelBtn.addEventListener('click', function(event){
+              event.stopPropagation();
+              __resetCoordsTexts(div);
+            });
+          }
+        });
       }else{
-        // TODO: Show an audio or a image? Maybe this should be a plugin (.fn)
         span.addEventListener('click', function(event){
           __resetCoordsTexts(div);
           span.innerHTML = options.text;
           span.className += ' text';
           if(typeof options.modal === 'object' || options.modal === true){
             span.className += ' modal';
-            var acceptBtn, cancelBtn; // hideCancelBtn;
-            if(typeof options.modal === 'object'){
-              acceptBtn = options.modal.acceptBtn;
-              // hideCancelBtn = options.modal.hideCancelBtn;
-              cancelBtn = options.modal.cancelBtn;
-            }
+            var acceptBtn;
+            if(typeof options.modal === 'object') acceptBtn = options.modal.acceptBtn;
             var modal = [
-                '<div class="confirmBox"><div class="confirmDialog"><div class="confirmContent">',
-                '<div class="confirmTitle">', options.text || '', '</div>',
-                '<div class="confirmButtons">',
+                '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
+                '<div class="confirm-title">', options.text || '', '</div>',
+                '<div class="confirm-buttons">',
                 '<a class="button accept" style="width: 100%;">', acceptBtn || 'Accept', '</a>',
-                // hideCancelBtn ? '' : '<a class="button cancel">', cancelBtn || 'Cancel', '</a>',
                 '</div>',
                 '</div></div></div>',
-                '<div class="confirmModal"></div>'
+                '<div class="confirm-modal"></div>'
             ].join('');
             span.innerHTML = modal;
             var acceptBtn = span.querySelectorAll('a.button.accept')[0];
@@ -120,11 +159,6 @@
               event.stopPropagation();
               __resetCoordsTexts(div);
             });
-            // if(hideCancelBtn) return;
-            // var cancelBtn = span.querySelectorAll('a.button.accept')[0];
-            // cancelBtn.addEventListener('click', function(event){
-            //   __resetCoordsTexts(div);
-            // });
           }
         });
       }
@@ -142,5 +176,7 @@
   };
 
   if(!window.Taggy) window.Taggy = _taggy;
+
+})();
 
 })();
