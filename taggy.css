@@ -1,4 +1,4 @@
-/* Taggy v0.1.1 */
+/* Taggy v0.1.0 */
 
 div.taggy-container {
   position: relative;
@@ -20,9 +20,22 @@ span.taggy-coord {
 }
 
 span.taggy-coord.text {
-  margin-top: -30px;
+  margin-top: -45px;
   margin-left: -20px;
   background: none;
+}
+
+span.taggy-coord.text:after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 5px;
+  top: 25px;
+  border-width: 15px 15px 0;
+  border-style: solid;
+  border-color: #f3961c transparent;
+  display: block;
+  width: 0;
 }
 
 .confirm-modal {
@@ -120,3 +133,4 @@ input.taggy-input {
 }
 
 .confirm-box .cancel:hover { background-color: #fc8982; }
+
