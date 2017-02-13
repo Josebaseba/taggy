@@ -52,9 +52,9 @@
     },
 
     setCoords: function(data, cb){
-      if(!data) return;
+      if(!data) return this;
       var isArray = Object.prototype.toString.call(data) === '[object Array]';
-      if(!isArray && typeof data !== 'object') return;
+      if(!isArray && typeof data !== 'object') return this;
       if(!isArray) data = [data];
       var len = this.length;
       while(len--){
@@ -91,7 +91,6 @@
     span.dataset.id = _taggy.generateId('tag');
     if(type === 'set'){
       if(typeof cb !== 'function') cb = function(){};
-      // TODO: Return an input and check if the val is correct
       span.addEventListener('click', function(event){
         __resetCoordsTexts(div);
         span.className += ' taggy-input';
@@ -105,15 +104,13 @@
           }
           var acceptBtnHtml = '<a class="button accept"' + (hideCancelBtn ? 'style="width: 100%;"' : '') + '>';
           var modal = [
-              '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-              '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
-              '<input type="text" class="taggy-input">',
-              '<div class="confirm-buttons">',
-              acceptBtnHtml, acceptBtn || 'Accept', '</a>',
-              hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
-              '</div>',
-              '</div></div></div>',
-              '<div class="confirm-modal"></div>'
+            '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
+            '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
+            '<input type="text" class="taggy-input">',
+            '<div class="confirm-buttons">',
+            acceptBtnHtml, acceptBtn || 'Accept', '</a>',
+            hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
+            '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
           ].join('');
           span.innerHTML = modal;
           var input = span.querySelectorAll('input.taggy-input')[0];
@@ -145,13 +142,11 @@
           var acceptBtn;
           if(typeof options.modal === 'object') acceptBtn = options.modal.acceptBtn;
           var modal = [
-              '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-              '<div class="confirm-title">', options.text || '', '</div>',
-              '<div class="confirm-buttons">',
-              '<a class="button accept" style="width: 100%;">', acceptBtn || 'Accept', '</a>',
-              '</div>',
-              '</div></div></div>',
-              '<div class="confirm-modal"></div>'
+            '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
+            '<div class="confirm-title">', options.text || '', '</div>',
+            '<div class="confirm-buttons">',
+            '<a class="button accept" style="width: 100%;">', acceptBtn || 'Accept', '</a>',
+            '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
           ].join('');
           span.innerHTML = modal;
           var acceptBtn = span.querySelectorAll('a.button.accept')[0];
