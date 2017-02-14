@@ -19,23 +19,31 @@ span.taggy-coord {
   cursor: pointer;
 }
 
-span.taggy-coord.text {
-  margin-top: -45px;
-  margin-left: -20px;
-  background: none;
+span.taggy-coord.text{
+  color: white;
+  display: inline-block;
+  position: absolute;
+	width: 100px;
+	height: auto;
+  border-radius: 0%;
+	background-color: orange;
+  margin-left: -5%;
+  margin-top: -6%;
+  padding: 1%;
+  text-align: center;
 }
 
-span.taggy-coord.text:after {
-  content: "";
-  position: absolute;
-  bottom: -15px;
-  left: 5px;
-  top: 25px;
-  border-width: 15px 15px 0;
-  border-style: solid;
-  border-color: #f3961c transparent;
-  display: block;
-  width: 0;
+span.taggy-coord.text:after{
+  content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 38px;
+  right: auto;
+  top: auto;
+	bottom: -20px;
+	border: 12px solid;
+	border-color: orange transparent transparent orange;
 }
 
 .confirm-modal {
@@ -133,4 +141,3 @@ input.taggy-input {
 }
 
 .confirm-box .cancel:hover { background-color: #fc8982; }
-
