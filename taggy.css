@@ -19,33 +19,6 @@ span.taggy-coord {
   cursor: pointer;
 }
 
-span.taggy-coord.text{
-  color: white;
-  display: inline-block;
-  position: absolute;
-	width: 100px;
-	height: auto;
-  border-radius: 0%;
-	background-color: orange;
-  margin-left: -5%;
-  margin-top: -6%;
-  padding: 1%;
-  text-align: center;
-}
-
-span.taggy-coord.text:after{
-  content: ' ';
-	position: absolute;
-	width: 0;
-	height: 0;
-	left: 38px;
-  right: auto;
-  top: auto;
-	bottom: -20px;
-	border: 12px solid;
-	border-color: orange transparent transparent orange;
-}
-
 span.taggy-coord.iluminate{
   -moz-box-shadow: 0px 0px 30px #A3FF0F;
   -webkit-box-shadow: 0px 0px 10px red;
