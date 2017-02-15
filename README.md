@@ -21,6 +21,7 @@ $img.getCoords(_saveCoords);
 $img = Taggy('img');
 
 var _coords = [
+  // this option tag not found more
   {
     x: 24.267100977198698,
     y: 10.074626865671641,
@@ -44,6 +45,22 @@ var _coords = [
         acceptBtn: 'Aceptar', // default Accept
         cancelBtn: 'Cancelar', // default Cancel
         hideCancelBtn: false // default false
+      } // default true
+    }
+  },
+  {
+    x: 49.75,
+    y: 35.44857768052516,
+    options: {
+      id   : 'test',
+      class: 'foo',
+      type : 'set-drop',
+      text : 'the dropdown title',
+      modal: {
+        acceptBtn: 'Aceptar', // default Accept
+        cancelBtn: 'Cancelar', // default Cancel
+        hideCancelBtn: false, // default false
+        optionSelect: ['muscle', 'head', 'heart']
       } // default true
     }
   },
