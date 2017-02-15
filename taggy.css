@@ -19,23 +19,11 @@ span.taggy-coord {
   cursor: pointer;
 }
 
-span.taggy-coord.text {
-  margin-top: -45px;
-  margin-left: -20px;
-  background: none;
-}
-
-span.taggy-coord.text:after {
-  content: "";
-  position: absolute;
-  bottom: -15px;
-  left: 5px;
-  top: 25px;
-  border-width: 15px 15px 0;
-  border-style: solid;
-  border-color: #f3961c transparent;
-  display: block;
-  width: 0;
+span.taggy-coord.iluminate{
+  -moz-box-shadow: 0px 0px 30px #A3FF0F;
+  -webkit-box-shadow: 0px 0px 10px red;
+  box-shadow: 0 0 10px red;
+  border: 1px solid red;
 }
 
 .confirm-modal {
@@ -132,5 +120,16 @@ input.taggy-input {
   border-radius: 0 0 .20em 0;
 }
 
+.confirm-box .cancel-full{
+  background-color: #34BC9D;
+  border-radius: 0 0 .20em 0;
+  width: 100%;
+}
+
 .confirm-box .cancel:hover { background-color: #fc8982; }
 
+select#optionSelector{
+  width: 80%;
+  height: 30px;
+  margin: 8%;
+}

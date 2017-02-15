@@ -87,13 +87,13 @@
     var options = coords.options;
     if(options.id) span.setAttribute('id', options.id);
     if(options.class) span.className += ' ' + options.class;
-    var type = options.type === 'set' ? 'set' : 'get';
+    var type = options.type === 'set-drop' ? 'set-drop' : 'set' ? 'set' : 'get';
     span.dataset.id = _taggy.generateId('tag');
     if(type === 'set'){
       if(typeof cb !== 'function') cb = function(){};
       span.addEventListener('click', function(event){
         __resetCoordsTexts(div);
-        span.className += ' taggy-input';
+        span.className += ' taggy-input iluminate';
         if(typeof options.modal === 'object' || options.modal === true){
           span.className += ' modal';
           var acceptBtn, cancelBtn, hideCancelBtn;
@@ -103,15 +103,25 @@
             cancelBtn = options.modal.cancelBtn;
           }
           var acceptBtnHtml = '<a class="button accept"' + (hideCancelBtn ? 'style="width: 100%;"' : '') + '>';
-          var modal = [
-            '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-            '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
-            '<input type="text" class="taggy-input">',
-            '<div class="confirm-buttons">',
-            acceptBtnHtml, acceptBtn || 'Accept', '</a>',
-            hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
-            '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
-          ].join('');
+          if(options.modal != 'object' && options.modal === true){
+            var modal = [
+              '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
+              '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
+              '<div class="confirm-buttons">',
+                '<a class="button cancel-full">' + (cancelBtn || 'Cancel') + '</a>',
+                '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
+            ].join('');
+          }else{
+            var modal = [
+              '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
+              '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
+              '<input type="text" class="taggy-input">',
+              '<div class="confirm-buttons">',
+              acceptBtnHtml, acceptBtn || 'Accept', '</a>',
+              hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
+              '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
+            ].join('');
+          }
           span.innerHTML = modal;
           var input = span.querySelectorAll('input.taggy-input')[0];
           input.addEventListener('click', function(event){
@@ -126,37 +136,62 @@
           if(hideCancelBtn) return;
           var cancelBtn = span.querySelectorAll('a.button.cancel')[0];
           cancelBtn.addEventListener('click', function(event){
+            span.classList.remove('iluminate');
             event.stopPropagation();
             __resetCoordsTexts(div);
           });
         }
       });
     }else{
-      if(typeof options.text !== 'string') return span;
-      span.addEventListener('click', function(event){
-        __resetCoordsTexts(div);
-        span.innerHTML = options.text;
-        span.className += ' text';
-        if(typeof options.modal === 'object' || options.modal === true){
-          span.className += ' modal';
-          var acceptBtn;
-          if(typeof options.modal === 'object') acceptBtn = options.modal.acceptBtn;
-          var modal = [
-            '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-            '<div class="confirm-title">', options.text || '', '</div>',
-            '<div class="confirm-buttons">',
-            '<a class="button accept" style="width: 100%;">', acceptBtn || 'Accept', '</a>',
-            '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
-          ].join('');
-          span.innerHTML = modal;
-          var acceptBtn = span.querySelectorAll('a.button.accept')[0];
-          acceptBtn.addEventListener('click', function(event){
-            event.stopPropagation();
-            __resetCoordsTexts(div);
-          });
-        }
-      });
-    }
+      if(type === 'set-drop'){
+        if(typeof cb !== 'function') cb = function(){};
+        span.addEventListener('click', function(event){
+          __resetCoordsTexts(div);
+          span.className += ' taggy-input iluminate';
+          if(typeof options.modal === 'object' || options.modal === true){
+            span.className += ' modal';
+            var acceptBtn, cancelBtn, hideCancelBtn;
+            if(typeof options.modal === 'object'){
+              acceptBtn = options.modal.acceptBtn;
+              hideCancelBtn = options.modal.hideCancelBtn;
+              cancelBtn = options.modal.cancelBtn;
+              optionSelect = options.modal.optionSelect;
+            }
+            var acceptBtnHtml = '<a class="button accept"' + (hideCancelBtn ? 'style="width: 100%;"' : '') + '>';
+            var modal = [
+              '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
+              '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
+              '<select id="optionSelector"></select>',
+              '<div class="confirm-buttons">',
+              acceptBtnHtml, acceptBtn || 'Accept', '</a>',
+              hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
+              '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
+            ].join('');
+            span.innerHTML = modal;
+            var sel = document.getElementById('optionSelector');
+            for(var i = 0; i < optionSelect.length; i++){
+              var opt = document.createElement('option');
+              opt.innerHTML = optionSelect[i];
+              opt.value = optionSelect[i];
+              sel.appendChild(opt);
+            }
+            var acceptBtn = span.querySelectorAll('a.button.accept')[0];
+            acceptBtn.addEventListener('click', function(event){
+              event.stopPropagation();
+              cb(sel.options[sel.selectedIndex].value || null, coords);
+              __resetCoordsTexts(div);
+            });
+            if(hideCancelBtn) return;
+            var cancelBtn = span.querySelectorAll('a.button.cancel')[0];
+            cancelBtn.addEventListener('click', function(event){
+              span.classList.remove('iluminate');
+              event.stopPropagation();
+              __resetCoordsTexts(div);
+            });
+          }
+        });
+  }
+}
     return span;
   };
 
