@@ -106,9 +106,9 @@
           if(options.modal != 'object' && options.modal === true){
             var modal = [
               '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-              '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
+              '<div class="confirm-title taggy-sm">', options.title || '', '<div class="close">X</div>' , '</div>',
+              '<div class="confirm-text">', options.text || '', '</div>',
               '<div class="confirm-buttons">',
-                '<a class="button cancel-full">' + (cancelBtn || 'Cancel') + '</a>',
                 '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
             ].join('');
           }else{

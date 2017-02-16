@@ -92,6 +92,22 @@ span.taggy-coord.iluminate{
   padding: 15px 20px;
 }
 
+.confirm-box .confirm-text{
+  padding: 10%;
+  font-size: 15px;
+}
+
+.confirm-box .confirm-title .close{
+  float: right;
+  color: #fdcc29;
+  background: white;
+  border-radius: 200px;
+  padding: 1%;
+  font-size: 12px;
+  width: 14px;
+  height: 14px;
+}
+
 input.taggy-input {
   height: 40px;
   border: none;
