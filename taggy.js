@@ -106,9 +106,9 @@
           if(options.modal != 'object' && options.modal === true){
             var modal = [
               '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-              '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
+              '<div class="confirm-title taggy-sm">', options.title || '', '<div class="close">X</div>' , '</div>',
+              '<div class="confirm-text">', options.text || '', '</div>',
               '<div class="confirm-buttons">',
-                '<a class="button cancel-full">' + (cancelBtn || 'Cancel') + '</a>',
                 '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
             ].join('');
           }else{
@@ -123,7 +123,7 @@
             ].join('');
           }
           span.innerHTML = modal;
-          var input = span.querySelectorAll('input.taggy-input')[0];
+          var input = span.querySelectorAll('input[type="text"].taggy-input')[0];
           input.addEventListener('click', function(event){
             event.stopPropagation();
           });
@@ -149,8 +149,7 @@
           __resetCoordsTexts(div);
           span.className += ' taggy-input iluminate';
           if(typeof options.modal === 'object' || options.modal === true){
-            span.className += ' modal';
-            var acceptBtn, cancelBtn, hideCancelBtn;
+            var acceptBtn, cancelBtn, hideCancelBtn, optionSelect;
             if(typeof options.modal === 'object'){
               acceptBtn = options.modal.acceptBtn;
               hideCancelBtn = options.modal.hideCancelBtn;
@@ -161,24 +160,43 @@
             var modal = [
               '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
               '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
-              '<select id="optionSelector"></select>',
+              '<div id="optionSelector"></div>',
               '<div class="confirm-buttons">',
               acceptBtnHtml, acceptBtn || 'Accept', '</a>',
               hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
               '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
             ].join('');
             span.innerHTML = modal;
-            var sel = document.getElementById('optionSelector');
-            for(var i = 0; i < optionSelect.length; i++){
-              var opt = document.createElement('option');
-              opt.innerHTML = optionSelect[i];
-              opt.value = optionSelect[i];
-              sel.appendChild(opt);
-            }
+            var ul = document.createElement('ul');
+            ul.setAttribute('id','optList');
+            var t, tt;
+            document.getElementById('optionSelector').appendChild(ul);
+            optionSelect.forEach(renderOptionsList);
+            function renderOptionsList(element, index, arr){
+                var li = document.createElement('li');
+                var opt = document.createElement('input');
+                opt.value = element;
+                opt.id = element;
+                li.setAttribute('class','item');
+                opt.setAttribute('type', 'radio');
+                ul.appendChild(li);
+                li.append(opt);
+                t = document.createTextNode(element);
+                li.innerHTML=li.innerHTML + element;
+                li.addEventListener('click', function(event){
+                  event.stopPropagation();
+                  document.querySelector('input[id=' + element + ']').setAttribute('checked', '');
+                  var checkbox = document.querySelector('input[id=' + element + ']').hasAttribute('checked');
+                  if(checkbox) return optionSelected = document.getElementById(element).value;
+                });
+            };
+
+
             var acceptBtn = span.querySelectorAll('a.button.accept')[0];
             acceptBtn.addEventListener('click', function(event){
+              span.classList.remove('iluminate');
               event.stopPropagation();
-              cb(sel.options[sel.selectedIndex].value || null, coords);
+              cb(optionSelected || null, coords);
               __resetCoordsTexts(div);
             });
             if(hideCancelBtn) return;
