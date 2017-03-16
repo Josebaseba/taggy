@@ -1,4 +1,4 @@
-// Taggy 0.2.0
+// Taggy 0.1.1
 
 (function() {
 
@@ -7,7 +7,7 @@
       var selector = document.querySelectorAll(params);
 
       this.length = selector.length;
-      this.version = '0.2.0';
+      this.version = '0.0.5';
 
       for(var i = 0; i < this.length; i++){
         this[i] = selector[i];
@@ -145,11 +145,13 @@
       if(typeof cb !== 'function') cb = function(){};
       span.addEventListener('click', function(event){
         if(!__tagListeners) return;
+        __tagListeners = false;
         __resetCoordsTexts(div);
         span.className += ' taggy-input iluminate';
         if(typeof options.modal === 'object' || options.modal === true){
           span.className += ' taggy-modal';
           var acceptBtn, cancelBtn, hideCancelBtn;
+          var showTextarea = !!options.modal.textarea;
           if(typeof options.modal === 'object'){
             acceptBtn = options.modal.acceptBtn;
             hideCancelBtn = options.modal.hideCancelBtn;
@@ -158,8 +160,10 @@
           var acceptBtnHtml = '<a class="button accept"' + (hideCancelBtn ? 'style="width: 100%;"' : '') + '>';
           var modal = [
             '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-            '<div class="confirm-title taggy-sm">', options.text || '', '</div>',
-            '<input type="text" class="taggy-input">',
+            '<div class="confirm-title taggy-sm">', options.title || '', '</div>',
+            '<input type="text" class="taggy-input"',
+            options.text ? ' value="' + options.text + '"' : '', '>',
+            showTextarea ? '<textarea class="taggy-textarea">' + (options.description || '') + '</textarea>' : '',
             '<div class="confirm-buttons">',
             acceptBtnHtml, acceptBtn || 'Accept', '</a>',
             hideCancelBtn ? '' : '<a class="button cancel">' + (cancelBtn || 'Cancel') + '</a>',
@@ -170,16 +174,30 @@
           input.addEventListener('click', function(event){
             event.stopPropagation();
           });
+          var textarea = span.querySelectorAll('textarea.taggy-textarea')[0];
+          if(textarea){
+            textarea.addEventListener('click', function(event){
+              event.stopPropagation();
+            });
+          }
           var acceptBtn = span.querySelectorAll('a.button.accept')[0];
           acceptBtn.addEventListener('click', function(event){
             event.stopPropagation();
-            cb(input.value || null, coords);
+            __tagListeners = true;
+            var description = null;
+            if(textarea){
+              description = textarea.value;
+              cb(input.value || null, description, coords);
+            }else{
+              cb(input.value || null, coords);
+            }
             __resetCoordsTexts(div);
           });
           if(hideCancelBtn) return;
           var cancelBtn = span.querySelectorAll('a.button.cancel')[0];
           cancelBtn.addEventListener('click', function(event){
             span.classList.remove('iluminate');
+            __tagListeners = true;
             event.stopPropagation();
             __resetCoordsTexts(div);
           });
@@ -251,16 +269,22 @@
     }else if(type === 'get'){
       if(typeof options.text !== 'string') return span;
       span.addEventListener('click', function(event){
+        if(!__tagListeners) return;
+        __tagListeners = false;
         __resetCoordsTexts(div);
         span.innerHTML = options.text;
         span.className += ' text iluminate';
         if(typeof options.modal === 'object' || options.modal === true){
           span.className += ' modal-taggy';
-          var acceptBtn;
+          var acceptBtn, showTextarea;
           if(typeof options.modal === 'object') acceptBtn = options.modal.acceptBtn;
+          showTextarea = !!options.description;
           var modal = [
             '<div class="confirm-box"><div class="confirm-dialog"><div class="confirm-content">',
-            '<div class="taggy-get">', options.text || '', '</div>',
+            '<div class="taggy-get">',
+            '<div class="taggy-text">', options.text || '', '</div>',
+            '<div class="taggy-description">', options.description || '', '</div>',
+            '</div>',
             '<div class="confirm-buttons">',
             '<a class="button accept" style="width: 100%;">', acceptBtn || 'Accept', '</a>',
             '</div>', '</div></div></div>', '<div class="confirm-modal"></div>'
@@ -268,6 +292,7 @@
           span.innerHTML = modal;
           var acceptBtn = span.querySelectorAll('a.button.accept')[0];
           acceptBtn.addEventListener('click', function(event){
+            __tagListeners = true;
             span.classList.remove('iluminate');
             event.stopPropagation();
             __resetCoordsTexts(div);
@@ -290,3 +315,4 @@
   if(!window.Taggy) window.Taggy = _taggy;
 
 })();
+
